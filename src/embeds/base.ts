@@ -9,6 +9,7 @@ export const blueEmbed = () => baseEmbed().setColor('#0000ff')
 export const orangeEmbed = () => baseEmbed().setColor('Orange')
 export const randomColorEmbed = () => baseEmbed().setColor('Random')
 
+export const botAvatar = ({ client }: { client: { user: User } }) => baseEmbed().setThumbnail(client.user.displayAvatarURL({ size: 4096, extension: 'png' }))
 
 export const mergeEmbeds = (...embeds: EmbedBuilder[]) => {
     let embedData = {};
