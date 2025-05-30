@@ -1,0 +1,31 @@
+import { AmethystCommand, log4js, preconditions } from "amethystjs";
+import { ChannelType } from "discord.js";
+import configs from "../../database/models/configs";
+
+export default new AmethystCommand({
+    name: 'prefix',
+    description: "Configure préfixe du bot",
+    aliases: ['setprefix', 'set-prefix', 'préfixe', 'préfix', 'prefixe'],
+    preconditions: [preconditions.GuildOnly],
+    permissions: ['ManageGuild'],
+    messageInputChannelTypes: [ChannelType.GuildText]
+}).setMessageRun(async({ client, options, message }) => {
+    const newPrefix = options.first
+
+    if (!newPrefix) {
+        const currentPrefix = client.prefixesManager.getPrefix(message.guildId)
+        return message.reply(`⚙️ | Le préfixe actuel est \`${currentPrefix}\`. Vous pouvez le modifier avec \`${currentPrefix}${options.commandName} nouveau_prefixe\``).catch(log4js.trace)
+    }
+
+    client.prefixesManager.setPrefix({
+        guildId: message.guildId,
+        prefix: newPrefix
+    })
+    
+    configs.findOrCreate({
+        where: { guild_id: message.guildId },
+        defaults: { guild_id: message.guildId, prefix: newPrefix }
+    }).then(([val, created]) => {
+        if (!created) val.update({ prefix: newPrefix }).catch(log4js.trace)
+    })
+})
