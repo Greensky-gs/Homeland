@@ -12,5 +12,11 @@
     "tsc": "^2.0.4",
     "tslib": "^2.8.1",
     "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "yarn tsc -b",
+    "launch": "yarn build && yarn start",
+    "lint": "eslint . --ext .ts,.js --fix"
   }
 }

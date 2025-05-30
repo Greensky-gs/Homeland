@@ -3,10 +3,10 @@ import { readdirSync } from 'node:fs';
 
 export const sequelise = new Sequelize({
     dialect: 'mysql',
-    password: process.env.dbp,
-    host: process.env.dbh,
-    username: process.env.dbu,
-    database: process.env.db,
+    password: process.env.db_password,
+    host: process.env.db_host,
+    username: process.env.db_user,
+    database: process.env.db_name,
     logging: false
 });
 

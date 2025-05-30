@@ -14,18 +14,20 @@ export default new AmethystCommand({
 
     if (!newPrefix) {
         const currentPrefix = client.prefixesManager.getPrefix(message.guildId)
-        return message.reply(`⚙️ | Le préfixe actuel est \`${currentPrefix}\`. Vous pouvez le modifier avec \`${currentPrefix}${options.commandName} nouveau_prefixe\``).catch(log4js.trace)
+        return message.reply(`⚙️ | Le préfixe actuel est \`${currentPrefix}\`\nVous pouvez le modifier avec \`${currentPrefix}${options.commandName} nouveau_prefixe\``).catch(log4js.trace)
     }
 
     client.prefixesManager.setPrefix({
         guildId: message.guildId,
         prefix: newPrefix
     })
-    
+
     configs.findOrCreate({
         where: { guild_id: message.guildId },
         defaults: { guild_id: message.guildId, prefix: newPrefix }
     }).then(([val, created]) => {
         if (!created) val.update({ prefix: newPrefix }).catch(log4js.trace)
     })
+
+    message.reply(`⚙️ | Le préfixe a été mis à jour en \`${newPrefix}\``).catch(log4js.trace)
 })

@@ -4,8 +4,8 @@ import { prefix } from './data/hard/configs.json'
 require('dotenv').config()
 
 const client = new AmethystClient({
-    partials: [Partials.Message, Partials.Channel],
-    intents: ['Guilds', 'MessageContent', 'GuildMessageReactions', "DirectMessages"]
+    partials: [Partials.Message, Partials.Channel, Partials.GuildMember, Partials.User],
+    intents: ['Guilds', 'MessageContent', 'GuildMessageReactions', "DirectMessages", 'GuildMessages']
 }, {
     token: process.env.token,
     prefix,
