@@ -1,0 +1,17 @@
+{
+    "moon_light_lake_painting": {
+        "key": "moon_light_lake_painting",
+        "name": "Clair de lune au fond du lac",
+        "type": "decoration",
+        "subtype": "painting",
+        "short_description": "Un tableau représentant un lac sous la lumière de la lune à Relief",
+        "author": "Rosetta Silverdawn",
+        "details": true,
+        "known": {
+            "name": true,
+            "short_description": true,
+            "author": false,
+            "details": false
+        }
+    }
+}
