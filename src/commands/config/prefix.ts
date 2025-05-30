@@ -1,5 +1,5 @@
 import { AmethystCommand, log4js, preconditions } from "amethystjs";
-import { ChannelType } from "discord.js";
+import { ApplicationCommandOptionType, ChannelType } from "discord.js";
 import configs from "../../database/models/configs";
 import { sendOrReply } from "../../utils/toolbox";
 
@@ -9,7 +9,15 @@ export default new AmethystCommand({
     aliases: ['setprefix', 'set-prefix', 'préfixe', 'préfix', 'prefixe'],
     preconditions: [preconditions.GuildOnly],
     permissions: ['ManageGuild'],
-    messageInputChannelTypes: [ChannelType.GuildText]
+    messageInputChannelTypes: [ChannelType.GuildText],
+    options: [
+        {
+            name: "préfixe",
+            description: "Nouveau préfixe à définir",
+            required: false,
+            type: ApplicationCommandOptionType.String
+        }
+    ]
 }).setMessageRun(async({ client, options, message }) => {
     const newPrefix = options.first
 

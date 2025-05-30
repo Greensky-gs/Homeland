@@ -1,5 +1,5 @@
 import { AmethystCommand } from "amethystjs";
-import { User } from "discord.js";
+import { ApplicationCommandOptionType, User } from "discord.js";
 import { botAvatar, greenEmbed, mergeEmbeds, orangeEmbed, userEmbed } from "./base";
 import { prefix } from "../data/hard/configs.json";
 import { getPermission } from "../utils/getters";
@@ -15,6 +15,10 @@ export const commandHelpEmbed = (user: User, command: AmethystCommand) => mergeE
         name: "Permissions du bot",
         value: command.options.clientPermissions.map(x => getPermission(x)).join(', '),
         inline: false
+    } : null,
+    command.options.options?.length > 0 ? {
+        name: "Options",
+        value: command.options.options.map(x => `- \`${x.name}\` ${(x as { required: boolean }).required ? 'requis' : 'optionnel'} : ${x.description} (${x.type === ApplicationCommandOptionType.String ? 'Texte' : x.type === ApplicationCommandOptionType.Boolean ? 'déclencheur' : x.type === ApplicationCommandOptionType.Integer ? 'nombre' : 'autre'})`).join('\n')
     } : null
 ]));
 export const helpCommand = (user: User, commands: AmethystCommand[], prefix: string) => mergeEmbeds(userEmbed(user), orangeEmbed(), botAvatar(user)).setTitle('Aide').setDescription(`Voici les commandes disponibles :\n\n${commands.map(x => `\`${prefix}${x.options.name}\` : ${x.options.description}`).join('\n')}`)
