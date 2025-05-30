@@ -5,7 +5,7 @@ import { sendOrReply } from "../../utils/toolbox";
 export default new AmethystCommand({
     name: "help",
     aliases: ['aide', 'commands', 'commandes'],
-    description: "Affiche la liste des commandes disponibles et leurs descriptions."
+    description: "Affiche la liste des commandes disponibles et leurs descriptions"
 }).setMessageRun(async({ client, message, options }) => {
     const cmd = options.first?.toLowerCase?.()
     const commands = client.messageCommands

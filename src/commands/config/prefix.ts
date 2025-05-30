@@ -5,7 +5,7 @@ import { sendOrReply } from "../../utils/toolbox";
 
 export default new AmethystCommand({
     name: 'prefix',
-    description: "Configure préfixe du bot",
+    description: "Configure le préfixe du bot",
     aliases: ['setprefix', 'set-prefix', 'préfixe', 'préfix', 'prefixe'],
     preconditions: [preconditions.GuildOnly],
     permissions: ['ManageGuild'],
