@@ -10,3 +10,12 @@ export const moneyConversions: moneyConversionsType = {
     fragments: {number: 30, gives: 'stones'},
     stones: {number: 5, gives: 'masterworks'}
 }
+export const defaultMoneyContent = () => ({
+    bronzes: 0,
+    silvers: 0,
+    gold: 0,
+    shards: 0,
+    fragments: 0,
+    stones: 0,
+    masterworks: 0
+})
