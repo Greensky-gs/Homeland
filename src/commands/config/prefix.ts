@@ -1,6 +1,7 @@
 import { AmethystCommand, log4js, preconditions } from "amethystjs";
 import { ChannelType } from "discord.js";
 import configs from "../../database/models/configs";
+import { sendOrReply } from "../../utils/toolbox";
 
 export default new AmethystCommand({
     name: 'prefix',
@@ -14,7 +15,7 @@ export default new AmethystCommand({
 
     if (!newPrefix) {
         const currentPrefix = client.prefixesManager.getPrefix(message.guildId)
-        return message.reply(`⚙️ | Le préfixe actuel est \`${currentPrefix}\`\nVous pouvez le modifier avec \`${currentPrefix}${options.commandName} nouveau_prefixe\``).catch(log4js.trace)
+        return sendOrReply(message, `⚙️ | Le préfixe actuel est \`${currentPrefix}\`\nVous pouvez le modifier avec \`${currentPrefix}${options.commandName} nouveau_prefixe\``).catch(log4js.trace)
     }
 
     client.prefixesManager.setPrefix({
@@ -29,5 +30,5 @@ export default new AmethystCommand({
         if (!created) val.update({ prefix: newPrefix }).catch(log4js.trace)
     })
 
-    message.reply(`⚙️ | Le préfixe a été mis à jour en \`${newPrefix}\``).catch(log4js.trace)
+    sendOrReply(message, `⚙️ | Le préfixe a été mis à jour en \`${newPrefix}\``).catch(log4js.trace)
 })
