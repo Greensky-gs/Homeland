@@ -1,5 +1,5 @@
 import { AmethystCommand } from "amethystjs";
-import { ApplicationCommandChoicesData, ApplicationCommandOptionData, ApplicationCommandOptionType, User } from "discord.js";
+import { APIEmbedField, ApplicationCommandChoicesData, ApplicationCommandOptionData, ApplicationCommandOptionType, User } from "discord.js";
 import { botAvatar, greenEmbed, mergeEmbeds, orangeEmbed, userEmbed } from "./base";
 import { prefix } from "../data/hard/configs.json";
 import { getPermission } from "../utils/getters";
@@ -31,20 +31,49 @@ const recursiveCommandOptionDescription = (option: ApplicationCommandOptionData,
     }
 }
 
-export const commandHelpEmbed = (user: User, command: AmethystCommand) => mergeEmbeds(userEmbed(user), orangeEmbed(), botAvatar(user)).setTitle('Aide').setDescription(`Commande \`${prefix}${command.options.name}\`\n\n**Description :** ${command.options.description}\n\n**Alias :** ${command.options.aliases?.length ? command.options.aliases.map(x => `\`${x}\``).join(', ') : 'Aucun'}\n\n**Cooldown :** \`${command.options.cooldown ?? user.client.configs.defaultCooldownTime}s\``).addFields(removeNullElements([    
-    command.options.permissions?.length > 0 ? {
-        name: "Permissions requises",
-        value: command.options.permissions.map(x => getPermission(x)).join(', '),
-        inline: false
-    } : null,
-    command.options.clientPermissions?.length > 0 ? {
-        name: "Permissions du bot",
-        value: command.options.clientPermissions.map(x => getPermission(x)).join(', '),
-        inline: false
-    } : null,
-    command.options.options?.length > 0 ? {
-        name: "Options",
-        value: command.options.options.map(x => recursiveCommandOptionDescription(x)).join('\n')
-    } : null
-]));
+export const commandHelpEmbed = (user: User, command: AmethystCommand) => {
+    const embed = mergeEmbeds(userEmbed(user), orangeEmbed(), botAvatar(user))
+        .setTitle('Aide')
+        .setDescription(`Commande \`${prefix}${command.options.name}\`\n\n**Description :** ${command.options.description}\n\n**Alias :** ${command.options.aliases?.length ? command.options.aliases.map(x => `\`${x}\``).join(', ') : 'Aucun'}\n\n**Cooldown :** \`${command.options.cooldown ?? user.client.configs.defaultCooldownTime}s\``)
+        .addFields(removeNullElements([    
+            command.options.permissions?.length > 0 ? {
+                name: "Permissions requises",
+                value: command.options.permissions.map(x => getPermission(x)).join(', '),
+                inline: false
+            } : null,
+            command.options.clientPermissions?.length > 0 ? {
+                name: "Permissions du bot",
+                value: command.options.clientPermissions.map(x => getPermission(x)).join(', '),
+                inline: false
+            } : null
+        ]))
+
+        if (command.options.options?.length > 0) {
+            const groups = command.options.options.filter(x => x.type === ApplicationCommandOptionType.SubcommandGroup);
+            if (groups.length > 0) {
+                groups.forEach((group) => {
+                    embed.addFields({
+                        name: `Groupe ${group.name} de sous-commandes`,
+                        value: `> ${group.description}\n\n${group.options.map(x => recursiveCommandOptionDescription(x)).join('\n')}`,
+                    })
+                })
+
+                if (command.options.options.filter(x => x.type !== ApplicationCommandOptionType.SubcommandGroup).length > 0) {
+                    embed.addFields({
+                        name: "Autres options",
+                        value: command.options.options.filter(x => x.type !== ApplicationCommandOptionType.SubcommandGroup).map(x => recursiveCommandOptionDescription(x)).join('\n'),
+                        inline: false
+                    });
+                }
+            } else {
+                embed.addFields({
+                    name: "Options",
+                    value: command.options.options.map(x => recursiveCommandOptionDescription(x)).join('\n'),
+                    inline: false
+                });
+            }
+        }
+
+    return embed
+};
 export const helpCommand = (user: User, commands: AmethystCommand[], prefix: string) => mergeEmbeds(userEmbed(user), orangeEmbed(), botAvatar(user)).setTitle('Aide').setDescription(`Voici les commandes disponibles :\n\n${commands.map(x => `\`${prefix}${x.options.name}\` : ${x.options.description}`).join('\n')}`)
