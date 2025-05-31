@@ -17,7 +17,8 @@ export default new AmethystCommand({
             type: ApplicationCommandOptionType.Boolean
         }
     ],
-    clientPermissions: ['AttachFiles']
+    clientPermissions: ['AttachFiles'],
+    cooldown: 20
 }).setMessageRun(async({ message, options, client }) => {
     if (message.channel.isSendable()) {
         message.channel.sendTyping().catch(log4js.trace)
