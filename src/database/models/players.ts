@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { DatabaseTables } from "../../types/database";
 import { sequelise } from "../sequelize";
+import { defaultMoneyContent } from "../../data/values/game";
 
 const players = sequelise.define(DatabaseTables.Players, {
     user_id: {
@@ -29,15 +30,7 @@ const players = sequelise.define(DatabaseTables.Players, {
     gold: {
         type: DataTypes.JSON,
         allowNull: false,
-        defaultValue: {
-            bronzes: 0,
-            silvers: 0,
-            gold: 0,
-            shards: 0,
-            fragments: 0,
-            stones: 0,
-            masterworks: 0
-        }
+        defaultValue: defaultMoneyContent()
     }
 })
 

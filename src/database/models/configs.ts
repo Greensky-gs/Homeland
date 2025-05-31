@@ -13,6 +13,26 @@ const configs = sequelise.define(DatabaseTables.Configs, {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: prefix
+    },
+    denied_channels: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        defaultValue: []
+    },
+    only_channels: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        defaultValue: []
+    },
+    only_roles: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        defaultValue: []
+    },
+    deny_roles: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        defaultValue: []
     }
 })
 

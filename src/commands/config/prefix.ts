@@ -2,6 +2,7 @@ import { AmethystCommand, log4js, preconditions } from "amethystjs";
 import { ApplicationCommandOptionType, ChannelType } from "discord.js";
 import configs from "../../database/models/configs";
 import { sendOrReply } from "../../utils/toolbox";
+import { configurations } from "../../cache/configurations";
 
 export default new AmethystCommand({
     name: 'prefix',
@@ -31,12 +32,7 @@ export default new AmethystCommand({
         prefix: newPrefix
     })
 
-    configs.findOrCreate({
-        where: { guild_id: message.guildId },
-        defaults: { guild_id: message.guildId, prefix: newPrefix }
-    }).then(([val, created]) => {
-        if (!created) val.update({ prefix: newPrefix }).catch(log4js.trace)
-    })
+    configurations.update(message.guildId, 'prefix', newPrefix).catch(log4js.trace)
 
     sendOrReply(message, `⚙️ | Le préfixe a été mis à jour en \`${newPrefix}\``).catch(log4js.trace)
 })

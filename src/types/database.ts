@@ -19,4 +19,8 @@ export type DatabasePlayer = {
 export type DatabaseConfig = {
     guild_id: string;
     prefix: string;
+    denied_channels: string[];
+    only_channels: string[];
+    only_roles: string[];
+    deny_roles: string[];
 }
