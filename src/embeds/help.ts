@@ -5,7 +5,7 @@ import { prefix } from "../data/hard/configs.json";
 import { getPermission } from "../utils/getters";
 import { removeNullElements } from "../utils/toolbox";
 
-export const commandHelpEmbed = (user: User, command: AmethystCommand) => mergeEmbeds(userEmbed(user), orangeEmbed(), botAvatar(user)).setTitle('Aide').setDescription(`Commande \`${prefix}${command.options.name}\`\n\n**Description :** ${command.options.description}\n\n**Alias :** ${command.options.aliases?.length ? command.options.aliases.join(', ') : 'Aucun'}`).addFields(removeNullElements([    
+export const commandHelpEmbed = (user: User, command: AmethystCommand) => mergeEmbeds(userEmbed(user), orangeEmbed(), botAvatar(user)).setTitle('Aide').setDescription(`Commande \`${prefix}${command.options.name}\`\n\n**Description :** ${command.options.description}\n\n**Alias :** ${command.options.aliases?.length ? command.options.aliases.map(x => `\`${x}\``).join(', ') : 'Aucun'}\n\n**Cooldown :** \`${command.options.cooldown ?? user.client.configs.defaultCooldownTime}s\``).addFields(removeNullElements([    
     command.options.permissions?.length > 0 ? {
         name: "Permissions requises",
         value: command.options.permissions.map(x => getPermission(x)).join(', '),
